@@ -1,6 +1,6 @@
-%global		svndate	20121218
+%define		svndate	20121218
 # Chromium 23 needs this revision.
-%global		svnrev	2718
+%define		svnrev	2718
 Summary:	Libraries to provide Real Time Communications via the web
 Name:		webrtc
 Version:	0.1
