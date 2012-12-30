@@ -1,9 +1,10 @@
-%define		svndate 20120613
-%define		svnrev 2401
+%global		svndate	20121218
+# Chromium 23 needs this revision.
+%global		svnrev	2718
 Summary:	Libraries to provide Real Time Communications via the web
 Name:		webrtc
 Version:	0.1
-Release:	0.6.%{svndate}svn%{svnrev}
+Release:	0.9.%{svndate}svn%{svnrev}
 License:	BSD
 Group:		Libraries
 URL:		http://www.webrtc.org/
@@ -12,13 +13,10 @@ URL:		http://www.webrtc.org/
 # mv webrtc/ webrtc-20120613svn2401
 # tar cfj webrtc-20120613svn2401.tar.bz2 webrtc-20120613svn2401
 Source0:	%{name}-%{svndate}svn%{svnrev}.tar.bz2
-# Source0-md5:	e768b9133df09fe3ce7fe260145d4f27
+# Source0-md5:	68977feca42feea6f358aeaf4c463880
 # Google provides no real way to build this code, except as part of Chromium
 # That's just stupid.
 Patch0:		build-sanity.patch
-# Naming your internal header the same thing as the upstream core header
-# is also stupid.
-Patch1:		system-libyuv.patch
 BuildRequires:	alsa-lib-devel
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -34,7 +32,7 @@ BuildRequires:	xorg-lib-libXext-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 # various missing libs: -lpthread, -lm, -lX11 ...
-%define		skip_post_check_so	libsystem_wrappers.so.*.*.* libiSAC.so.*.*.* libwebrtc_utility.so.*.*.* libapm_util.so.*.*.* libaec.so.*.*.* libns.so.*.*.* libbitrate_controller.so.*.*.* libvideo_render_module.so.*.*.*
+%define		skip_post_check_so	libsystem_wrappers.so.*.*.* libiSAC.so.*.*.* libwebrtc_utility.so.*.*.* libapm_util.so.*.*.* libaec.so.*.*.* libns.so.*.*.* libbitrate_controller.so.*.*.* libvideo_render_module.so.*.*.* libwebrtc_jpeg.so.*.*.* libwebrtc_i420.so.*.*.*
 
 %description
 WebRTC is a free, open project that enables web browsers with
@@ -57,7 +55,6 @@ Development files for WebRTC.
 touch NEWS README ChangeLog
 ln -s LICENSE COPYING
 %patch0 -p1
-%patch1 -p1
 
 %build
 %{__libtoolize}
@@ -87,6 +84,10 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc LICENSE PATENTS AUTHORS
+%attr(755,root,root) %{_bindir}/frame_analyzer
+%attr(755,root,root) %{_bindir}/psnr_ssim_analyzer
+%attr(755,root,root) %{_bindir}/rgba_to_i420_converter
+
 %attr(755,root,root) %{_libdir}/libCNG.so.*.*.*
 %ghost %{_libdir}/libCNG.so.0
 %attr(755,root,root) %{_libdir}/libG711.so.*.*.*
@@ -133,6 +134,8 @@ rm -rf $RPM_BUILD_ROOT
 %ghost %{_libdir}/librtp_rtcp.so.0
 %attr(755,root,root) %{_libdir}/libsignal_processing.so.*.*.*
 %ghost %{_libdir}/libsignal_processing.so.0
+%attr(755,root,root) %{_libdir}/libsimple_command_line_parser.so.*.*.*
+%ghost %{_libdir}/libsimple_command_line_parser.so.0
 %attr(755,root,root) %{_libdir}/libsystem_wrappers.so.*.*.*
 %ghost %{_libdir}/libsystem_wrappers.so.0
 %attr(755,root,root) %{_libdir}/libudp_transport.so.*.*.*
@@ -145,6 +148,8 @@ rm -rf $RPM_BUILD_ROOT
 %ghost %{_libdir}/libvideo_engine_core.so.0
 %attr(755,root,root) %{_libdir}/libvideo_processing.so.*.*.*
 %ghost %{_libdir}/libvideo_processing.so.0
+%attr(755,root,root) %{_libdir}/libvideo_quality_analysis.so.*.*.*
+%ghost %{_libdir}/libvideo_quality_analysis.so.0
 %attr(755,root,root) %{_libdir}/libvideo_render_module.so.*.*.*
 %ghost %{_libdir}/libvideo_render_module.so.0
 %attr(755,root,root) %{_libdir}/libvoice_engine_core.so.*.*.*
@@ -188,12 +193,14 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libresampler.so
 %{_libdir}/librtp_rtcp.so
 %{_libdir}/libsignal_processing.so
+%{_libdir}/libsimple_command_line_parser.so
 %{_libdir}/libsystem_wrappers.so
 %{_libdir}/libudp_transport.so
 %{_libdir}/libvad.so
 %{_libdir}/libvideo_capture_module.so
 %{_libdir}/libvideo_engine_core.so
 %{_libdir}/libvideo_processing.so
+%{_libdir}/libvideo_quality_analysis.so
 %{_libdir}/libvideo_render_module.so
 %{_libdir}/libvoice_engine_core.so
 %{_libdir}/libwebrtc_i420.so
