@@ -42,6 +42,7 @@ purpose.
 
 %package devel
 Summary:	Development files for WebRTC
+Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	libjpeg-turbo-devel
 Requires:	libvpx-devel
