@@ -4,7 +4,7 @@
 Summary:	Libraries to provide Real Time Communications via the web
 Name:		webrtc
 Version:	0.1
-Release:	0.10.%{svndate}svn%{svnrev}
+Release:	0.11.%{svndate}svn%{svnrev}
 License:	BSD
 Group:		Libraries
 URL:		http://www.webrtc.org/
