@@ -4,7 +4,7 @@
 Summary:	Libraries to provide Real Time Communications via the web
 Name:		webrtc
 Version:	0.1
-Release:	0.11.%{svndate}svn%{svnrev}
+Release:	0.12.%{svndate}svn%{svnrev}
 License:	BSD
 Group:		Libraries
 URL:		http://www.webrtc.org/
@@ -17,6 +17,7 @@ Source0:	%{name}-%{svndate}svn%{svnrev}.tar.bz2
 # Google provides no real way to build this code, except as part of Chromium
 # That's just stupid.
 Patch0:		build-sanity.patch
+Patch1:		libvpx2.patch
 BuildRequires:	alsa-lib-devel
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -56,6 +57,7 @@ Development files for WebRTC.
 touch NEWS README ChangeLog
 ln -s LICENSE COPYING
 %patch0 -p1
+%patch1 -p1
 
 %build
 %{__libtoolize}

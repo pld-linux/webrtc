@@ -1,0 +1,24 @@
+--- webrtc-20121218svn2718/src/modules/video_coding/codecs/vp8/vp8.cc~	2012-08-25 01:01:38.000000000 +0200
++++ webrtc-20121218svn2718/src/modules/video_coding/codecs/vp8/vp8.cc	2015-05-23 22:41:02.950092007 +0200
+@@ -179,7 +179,7 @@
+   if (codec_.width % 32 == 0) {
+     align = 32;
+   }
+-  raw_ = vpx_img_alloc(NULL, IMG_FMT_I420, codec_.width, codec_.height, align);
++  raw_ = vpx_img_alloc(NULL, VPX_IMG_FMT_I420, codec_.width, codec_.height, align);
+   // populate encoder configuration with default values
+   if (vpx_codec_enc_config_default(vpx_codec_vp8_cx(), config_, 0)) {
+     return WEBRTC_VIDEO_CODEC_ERROR;
+@@ -347,9 +347,9 @@
+   uint8_t* buffer = input_image.Buffer();
+   uint32_t v_plane_loc = codec_.height * codec_.width +
+     ((codec_.width + 1) >> 1) * ((codec_.height + 1) >> 1);
+-  raw_->planes[PLANE_Y] = buffer;
+-  raw_->planes[PLANE_U] = &buffer[codec_.width * codec_.height];
+-  raw_->planes[PLANE_V] = &buffer[v_plane_loc];
++  raw_->planes[VPX_PLANE_Y] = buffer;
++  raw_->planes[VPX_PLANE_U] = &buffer[codec_.width * codec_.height];
++  raw_->planes[VPX_PLANE_V] = &buffer[v_plane_loc];
+ 
+   int flags = 0;
+ #if WEBRTC_LIBVPX_VERSION >= 971
