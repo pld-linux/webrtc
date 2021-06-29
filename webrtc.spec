@@ -3,12 +3,12 @@
 %define		svnrev	2718
 %define		rel	15
 Summary:	Libraries to provide Real Time Communications via the web
+Summary(pl.UTF-8):	Biblioteki zapewniające komunikację RTC (Real Time Communications) poprzez WWW
 Name:		webrtc
 Version:	0.1
 Release:	0.%{rel}.%{svndate}svn%{svnrev}
 License:	BSD
 Group:		Libraries
-URL:		http://www.webrtc.org/
 # No source tarballs. This is a google failure^Wproject.
 # svn export http://webrtc.googlecode.com/svn/trunk/ webrtc
 # mv webrtc/ webrtc-20120613svn2401
@@ -19,6 +19,8 @@ Source0:	%{name}-%{svndate}svn%{svnrev}.tar.bz2
 # That's just stupid.
 Patch0:		build-sanity.patch
 Patch1:		libvpx2.patch
+Patch2:		%{name}-types.patch
+URL:		http://www.webrtc.org/
 BuildRequires:	alsa-lib-devel
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -42,8 +44,15 @@ Real-Time Communications (RTC) capabilities via simple Javascript
 APIs. The WebRTC components have been optimized to best serve this
 purpose.
 
+%description -l pl.UTF-8
+WebRTC to wolnodostępny, otwarty projekt umożliwiający przeglądarkom
+WWW obsługę komunikacji RTC (Real-Time Communications) poprzez proste
+javascriptowe API. Komponenty WebRTC zostały zoptymalizowane pod tym
+kątem.
+
 %package devel
 Summary:	Development files for WebRTC
+Summary(pl.UTF-8):	Pliki programistyczne WebRTC
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	libjpeg-turbo-devel
@@ -53,12 +62,16 @@ Requires:	libyuv-devel
 %description devel
 Development files for WebRTC.
 
+%description devel -l pl.UTF-8
+Pliki programistyczne WebRTC.
+
 %prep
 %setup -q -n %{name}-%{svndate}svn%{svnrev}
 touch NEWS README ChangeLog
 ln -s LICENSE COPYING
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 %{__libtoolize}
@@ -74,6 +87,7 @@ ln -s LICENSE COPYING
 
 %install
 rm -rf $RPM_BUILD_ROOT
+
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 

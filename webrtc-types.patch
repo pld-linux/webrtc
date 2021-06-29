@@ -1,0 +1,159 @@
+--- webrtc-20121218svn2718/src/tools/frame_analyzer/video_quality_analysis.h.orig	2012-08-27 16:57:19.000000000 +0200
++++ webrtc-20121218svn2718/src/tools/frame_analyzer/video_quality_analysis.h	2021-06-28 22:10:14.646395156 +0200
+@@ -54,7 +54,7 @@
+ // frames are exactly the same) will be 48. In the case of SSIM the max return
+ // value will be 1.
+ double CalculateMetrics(VideoAnalysisMetricsType video_metrics_type,
+-                        const uint8* ref_frame,  const uint8* test_frame,
++                        const uint8_t* ref_frame,  const uint8_t* test_frame,
+                         int width, int height);
+ 
+ // Function to print the result from the analysis.
+@@ -82,11 +82,11 @@
+ 
+ // Gets the next frame from an open I420 file.
+ bool GetNextI420Frame(FILE* input_file, int width, int height,
+-                      uint8* result_frame);
++                      uint8_t* result_frame);
+ 
+ // Extracts an I420 frame at position frame_number from the file.
+ bool ExtractFrameFromI420(const char* i420_file_name, int width, int height,
+-                          int frame_number, uint8* result_frame);
++                          int frame_number, uint8_t* result_frame);
+ 
+ 
+ }  // namespace test
+--- webrtc-20121218svn2718/src/tools/frame_analyzer/video_quality_analysis.cc.orig	2012-08-27 16:57:19.000000000 +0200
++++ webrtc-20121218svn2718/src/tools/frame_analyzer/video_quality_analysis.cc	2021-06-28 22:10:57.132831653 +0200
+@@ -82,7 +82,7 @@
+ }
+ 
+ bool GetNextI420Frame(FILE* input_file, int width, int height,
+-                      uint8* result_frame) {
++                      uint8_t* result_frame) {
+   int frame_size = GetI420FrameSize(width, height);
+   bool errors = false;
+ 
+@@ -99,7 +99,7 @@
+ }
+ 
+ bool ExtractFrameFromI420(const char* i420_file_name, int width, int height,
+-                          int frame_number, uint8* result_frame) {
++                          int frame_number, uint8_t* result_frame) {
+   int frame_size = GetI420FrameSize(width, height);
+   int offset = frame_number * frame_size;  // Calculate offset for the frame.
+   bool errors = false;
+@@ -126,7 +126,7 @@
+ }
+ 
+ double CalculateMetrics(VideoAnalysisMetricsType video_metrics_type,
+-                        const uint8* ref_frame,  const uint8* test_frame,
++                        const uint8_t* ref_frame,  const uint8_t* test_frame,
+                         int width, int height) {
+   if (!ref_frame || !test_frame)
+     return -1;
+@@ -134,12 +134,12 @@
+     return -1;
+   int half_width = (width + 1) >> 1;
+   int half_height = (height + 1) >> 1;
+-  const uint8* src_y_a = ref_frame;
+-  const uint8* src_u_a = src_y_a + width * height;
+-  const uint8* src_v_a = src_u_a + half_width * half_height;
+-  const uint8* src_y_b = test_frame;
+-  const uint8* src_u_b = src_y_b + width * height;
+-  const uint8* src_v_b = src_u_b + half_width * half_height;
++  const uint8_t* src_y_a = ref_frame;
++  const uint8_t* src_u_a = src_y_a + width * height;
++  const uint8_t* src_v_a = src_u_a + half_width * half_height;
++  const uint8_t* src_y_b = test_frame;
++  const uint8_t* src_u_b = src_y_b + width * height;
++  const uint8_t* src_v_b = src_u_b + half_width * half_height;
+ 
+   int stride_y = width;
+   int stride_uv = half_width;
+@@ -180,8 +180,8 @@
+   char line[STATS_LINE_LENGTH];
+ 
+   // Allocate buffers for test and reference frames.
+-  uint8* test_frame = new uint8[size];
+-  uint8* reference_frame = new uint8[size];
++  uint8_t* test_frame = new uint8_t[size];
++  uint8_t* reference_frame = new uint8_t[size];
+   int previous_frame_number = -1;
+ 
+   // While there are entries in the stats file.
+--- webrtc-20121218svn2718/src/tools/psnr_ssim_analyzer/psnr_ssim_analyzer.cc.orig	2012-08-27 16:57:19.000000000 +0200
++++ webrtc-20121218svn2718/src/tools/psnr_ssim_analyzer/psnr_ssim_analyzer.cc	2021-06-29 05:46:46.874665370 +0200
+@@ -26,8 +26,8 @@
+   int size = webrtc::test::GetI420FrameSize(width, height);
+ 
+   // Allocate buffers for test and reference frames.
+-  uint8* test_frame = new uint8[size];
+-  uint8* ref_frame = new uint8[size];
++  uint8_t* test_frame = new uint8_t[size];
++  uint8_t* ref_frame = new uint8_t[size];
+ 
+   int frame_counter = 0;
+ 
+--- webrtc-20121218svn2718/src/tools/converter/converter.h.orig	2012-08-22 10:12:00.000000000 +0200
++++ webrtc-20121218svn2718/src/tools/converter/converter.h	2021-06-29 05:53:42.735745790 +0200
+@@ -75,13 +75,13 @@
+ 
+   // Writes the Y, U and V (in this order) planes to the file, thus adding a
+   // raw YUV frame to the file.
+-  bool AddYUVToFile(uint8* y_plane, int y_plane_size,
+-                    uint8* u_plane, int u_plane_size,
+-                    uint8* v_plane, int v_plane_size,
++  bool AddYUVToFile(uint8_t* y_plane, int y_plane_size,
++                    uint8_t* u_plane, int u_plane_size,
++                    uint8_t* v_plane, int v_plane_size,
+                     FILE* output_file);
+ 
+   // Adds the Y, U or V plane to the file.
+-  bool AddYUVPlaneToFile(uint8* yuv_plane, int yuv_plane_size, FILE* file);
++  bool AddYUVPlaneToFile(uint8_t* yuv_plane, int yuv_plane_size, FILE* file);
+ 
+   // Reads a RGBA frame from input_file_name with input_frame_size size in bytes
+   // into the buffer.
+--- webrtc-20121218svn2718/src/tools/converter/converter.cc.orig	2012-08-22 10:12:00.000000000 +0200
++++ webrtc-20121218svn2718/src/tools/converter/converter.cc	2021-06-29 05:56:59.084682076 +0200
+@@ -45,13 +45,13 @@
+   }
+ 
+   int input_frame_size = InputFrameSize();
+-  uint8* rgba_buffer = new uint8[input_frame_size];
++  uint8_t* rgba_buffer = new uint8_t[input_frame_size];
+   int y_plane_size = YPlaneSize();
+-  uint8* dst_y = new uint8[y_plane_size];
++  uint8_t* dst_y = new uint8_t[y_plane_size];
+   int u_plane_size = UPlaneSize();
+-  uint8* dst_u = new uint8[u_plane_size];
++  uint8_t* dst_u = new uint8_t[u_plane_size];
+   int v_plane_size = VPlaneSize();
+-  uint8* dst_v = new uint8[v_plane_size];
++  uint8_t* dst_v = new uint8_t[v_plane_size];
+ 
+   int counter = 0;  // Counter to form frame names.
+   bool success = false;  // Is conversion successful.
+@@ -106,9 +106,9 @@
+   return success;
+ }
+ 
+-bool Converter::AddYUVToFile(uint8* y_plane, int y_plane_size,
+-                             uint8* u_plane, int u_plane_size,
+-                             uint8* v_plane, int v_plane_size,
++bool Converter::AddYUVToFile(uint8_t* y_plane, int y_plane_size,
++                             uint8_t* u_plane, int u_plane_size,
++                             uint8_t* v_plane, int v_plane_size,
+                              FILE* output_file) {
+   bool success = AddYUVPlaneToFile(y_plane, y_plane_size, output_file) &&
+                  AddYUVPlaneToFile(u_plane, u_plane_size, output_file) &&
+@@ -116,7 +116,7 @@
+   return success;
+ }
+ 
+-bool Converter::AddYUVPlaneToFile(uint8* yuv_plane, int yuv_plane_size,
++bool Converter::AddYUVPlaneToFile(uint8_t* yuv_plane, int yuv_plane_size,
+                                   FILE* file) {
+   size_t bytes_written = fwrite(yuv_plane, 1, yuv_plane_size, file);
+ 
