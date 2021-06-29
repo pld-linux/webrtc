@@ -1,7 +1,7 @@
 %define		svndate	20121218
 # Chromium 23 needs this revision.
 %define		svnrev	2718
-%define		rel	15
+%define		rel	16
 Summary:	Libraries to provide Real Time Communications via the web
 Summary(pl.UTF-8):	Biblioteki zapewniające komunikację RTC (Real Time Communications) poprzez WWW
 Name:		webrtc
@@ -20,7 +20,7 @@ Source0:	%{name}-%{svndate}svn%{svnrev}.tar.bz2
 Patch0:		build-sanity.patch
 Patch1:		libvpx2.patch
 Patch2:		%{name}-types.patch
-URL:		http://www.webrtc.org/
+URL:		https://webrtc.org/
 BuildRequires:	alsa-lib-devel
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
