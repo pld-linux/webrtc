@@ -22,7 +22,7 @@ Patch1:		libvpx2.patch
 Patch2:		%{name}-types.patch
 URL:		http://www.webrtc.org/
 BuildRequires:	alsa-lib-devel
-BuildRequires:	autoconf
+BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
 BuildRequires:	libjpeg-turbo-devel
 BuildRequires:	libstdc++-devel
@@ -35,8 +35,9 @@ BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xorg-lib-libXext-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-# various missing libs: -lpthread, -lm, -lX11 ...
-%define		skip_post_check_so	libsystem_wrappers.so.*.*.* libiSAC.so.*.*.* libwebrtc_utility.so.*.*.* libapm_util.so.*.*.* libaec.so.*.*.* libns.so.*.*.* libbitrate_controller.so.*.*.* libvideo_render_module.so.*.*.* libwebrtc_jpeg.so.*.*.* libwebrtc_i420.so.*.*.*
+# unresolved "webrtc::MediaFile::CreateMediaFile(int)", "webrtc::MediaFile::DestroyMediaFile(webrtc::MediaFile*)" in libwebrtc_utility.so
+# these symbols are defined in libmedia_file.so, but it's already linked with libwebrtc_utilities.so (dependency cycle)
+%define		skip_post_check_so	libwebrtc_utility.so.*.*.*
 
 %description
 WebRTC is a free, open project that enables web browsers with
