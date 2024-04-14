@@ -1,7 +1,7 @@
 %define		svndate	20121218
 # Chromium 23 needs this revision.
 %define		svnrev	2718
-%define		rel	18
+%define		rel	19
 Summary:	Libraries to provide Real Time Communications via the web
 Summary(pl.UTF-8):	Biblioteki zapewniające komunikację RTC (Real Time Communications) poprzez WWW
 Name:		webrtc
